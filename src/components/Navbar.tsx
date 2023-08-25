@@ -1,25 +1,30 @@
-
-"use client"
+"use client";
+import { useAuthContext } from "@/app/Hooks/useAuthContext";
+import Link from "next/link";
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
-// import { close, logo, menu } from "../assets";
 
 export const navLinks = [
   {
-    id: "home",
-    title: "Home",
+    id: "",
+    title: "Blogs",
   },
   {
-    id: "features",
-    title: "Features",
+    id: "live",
+    title: "Live Matches",
   },
   {
-    id: "product",
-    title: "Product",
+    id: "addblog",
+    title: "Add Blogs",
   },
   {
-    id: "clients",
-    title: "Clients",
+    id: "addmatches",
+    title: "Add Matches",
+  },
+
+  {
+    id: "login",
+    title: "Log In",
   },
 ];
 
@@ -27,57 +32,80 @@ const Navbar = () => {
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
 
+  const { state } = useAuthContext();
+
   return (
-    <nav className="w-full flex p-6 justify-between items-center navbar bg-black">
-      {/* Logo */}
-      <h1 className="text-xl text-white">FullTime 360</h1>
-      
-      {/* Desktop Navigation */}
-      <ul className="list-none sm:flex hidden justify-end items-center flex-1">
-        {navLinks.map((nav, index) => (
-          <li
-            key={nav.id}
-            className={`font-poppins font-normal cursor-pointer text-[16px] ${
-              active === nav.title ? "text-white border" : "text-gray-100"
-            } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
-            onClick={() => setActive(nav.title)}
+    <div className="bg-black text-white">
+      <nav className="max-w-7xl m-auto flex p-6 justify-between items-center navbar ">
+        {/* Logo */}
+        <Link className="text-xl text-white" href={"/"}>
+          FullTime 360
+        </Link>
+
+        {/* Desktop Navigation */}
+        <ul className="list-none sm:flex hidden justify-end items-center flex-1">
+          {(state
+            ? navLinks.filter((x) => x.id !== "login")
+            : !state
+            ? navLinks.filter(
+                (x) => x.id !== "addblog" && x.id !== "addmatches"
+              )
+            : navLinks
+          ).map((nav, index) => (
+            <li
+              key={nav.id}
+              className={`font-poppins font-normal cursor-pointer text-[16px] ${
+                active === nav.title ? "text-white " : "text-gray-100"
+              } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
+              onClick={() => {
+                setActive(nav.title);
+                setToggle(!toggle);
+              }}
+            >
+              <Link href={`/${nav.id}`}>{nav.title}</Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Mobile Navigation */}
+        <div className="sm:hidden flex flex-1 justify-end items-center">
+          <FaBars
+            color={"white"}
+            // src={toggle ? close : menu}
+            alt="menu"
+            className="w-[28px] h-[28px] object-contain"
+            onClick={() => setToggle(!toggle)}
+          />
+
+          {/* Sidebar */}
+          <div
+            className={`${
+              !toggle ? "hidden" : "flex"
+            } p-6 bg-black absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
           >
-            <a href={`#${nav.id}`}>{nav.title}</a>
-          </li>
-        ))}
-      </ul>
-
-      {/* Mobile Navigation */}
-      <div className="sm:hidden flex flex-1 justify-end items-center">
-        <FaBars color={"white"}
-          // src={toggle ? close : menu}
-          alt="menu"
-          className="w-[28px] h-[28px] object-contain"
-          onClick={() => setToggle(!toggle)}
-        />
-
-        {/* Sidebar */}
-        <div
-          className={`${
-            !toggle ? "hidden" : "flex"
-          } p-6 bg-black absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
-        >
-          <ul className="list-none flex justify-end items-start flex-1 flex-col">
-            {navLinks.map((nav, index) => (
-              <li
-                key={nav.id}
-                className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                  active === nav.title ? "text-white border" : "text-gray-100"
-                } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
-                onClick={() => setActive(nav.title)}
-              >
-                <a href={`#${nav.id}`}>{nav.title}</a>
-              </li>
-            ))}
-          </ul>
+            <ul className="list-none flex justify-end items-start flex-1 flex-col">
+              {navLinks.map((nav, index) => (
+                <li
+                  key={nav.id}
+                  className={`font-poppins font-medium cursor-pointer text-[16px] ${
+                    active === nav.title ? "text-white " : "text-gray-100"
+                  } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
+                  onClick={() => {
+                    setActive(nav.title);
+                    setToggle(!toggle);
+                  }}
+                >
+                  <Link href={`/${nav.id}`}>{nav.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+        <p className="border p-1 ml-2">
+          {state?.email.slice(0, 1).toUpperCase()}
+        </p>
+      </nav>
+    </div>
   );
 };
 
