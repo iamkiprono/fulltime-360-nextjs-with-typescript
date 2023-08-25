@@ -43,7 +43,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <ul className="list-none sm:flex hidden justify-end items-center flex-1">
+        <div className="list-none sm:flex hidden justify-end items-center flex-1">
           {(state
             ? navLinks.filter((x) => x.id !== "login")
             : !state
@@ -65,7 +65,7 @@ const Navbar = () => {
               <Link href={`/${nav.id}`}>{nav.title}</Link>
             </li>
           ))}
-        </ul>
+        </div>
 
         {/* Mobile Navigation */}
         <div className="sm:hidden flex flex-1 justify-end items-center">
@@ -83,7 +83,7 @@ const Navbar = () => {
               !toggle ? "hidden" : "flex"
             } p-6 bg-black absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
           >
-            <ul className="list-none flex justify-end items-start flex-1 flex-col">
+            <div className="list-none flex justify-end items-start flex-1 flex-col">
               {(state
                 ? navLinks.filter((x) => x.id !== "login")
                 : !state
@@ -105,7 +105,7 @@ const Navbar = () => {
                   <Link href={`/${nav.id}`}>{nav.title}</Link>
                 </li>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
         <p className="border p-1 ml-2">
