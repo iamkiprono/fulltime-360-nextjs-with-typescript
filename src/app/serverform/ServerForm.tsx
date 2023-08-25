@@ -11,6 +11,7 @@ const ServerForm = () => {
   const [blog, setBlog] = useState("");
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
+  const [errorState, setErrorState] = useState("");
 
   const { state } = useAuthContext();
   const token = state?.token;
@@ -42,6 +43,10 @@ const ServerForm = () => {
       console.log(error);
     },
   });
+
+  if (error instanceof Error) {
+    setErrorState(error.message);
+  }
 
   const formStatus = useFormStatus();
 
@@ -84,7 +89,7 @@ const ServerForm = () => {
         name="link"
         onChange={(e) => setImage(e.target.value)}
       />
-      {isError && error.message}
+      {errorState}
       <button className="p-4 rounded bg-slate-600 text-white">
         {isLoading ? "Adding" : "Add"}
       </button>
