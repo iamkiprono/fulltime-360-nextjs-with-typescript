@@ -1,10 +1,9 @@
 "use client";
 
 import { liveMatches } from "@/types/types";
-import Link from "next/link";
-import { FaTrash } from "react-icons/fa";
-import { useAuthContext } from "../Hooks/useAuthContext";
 import { toast } from "react-hot-toast";
+import { FaLink, FaTrash } from "react-icons/fa";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const LiveMatchCard = ({ match }: { match: liveMatches }) => {
   const { state } = useAuthContext();
@@ -36,6 +35,27 @@ const LiveMatchCard = ({ match }: { match: liveMatches }) => {
       }
     }
   };
+
+  // send click to visits database
+  const sendClicks = async (
+    hometeam: string,
+    awayteam: string,
+    link: string
+  ) => {
+    const res = await fetch("https://blog-api-kiprono.onrender.com/visits", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hometeam, awayteam }),
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    window.open(link, "_blank");
+  };
+
   return (
     <div
       className="flex items-center justify-between shadow-md p-4 my-2"
@@ -49,9 +69,16 @@ const LiveMatchCard = ({ match }: { match: liveMatches }) => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Link target="_blank" href={match.matchlink}>
+        {/* <Link target="_blank" href={match.matchlink}>
           Watch
-        </Link>
+        </Link> */}
+
+        <FaLink
+          onClick={() =>
+            sendClicks(match.hometeam, match.awayteam, match.matchlink)
+          }
+        />
+
         {state && (
           <FaTrash
             className="cursor-pointer"

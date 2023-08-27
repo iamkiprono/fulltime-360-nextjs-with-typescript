@@ -26,13 +26,18 @@ export const navLinks = [
     id: "login",
     title: "Log In",
   },
+
+  {
+    id: "dashboard",
+    title: "Dashboard",
+  },
 ];
 
 const Navbar = () => {
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
 
-  const { state } = useAuthContext();
+  const { state, updateUser } = useAuthContext();
 
   return (
     <div className="bg-black text-white">
@@ -48,7 +53,10 @@ const Navbar = () => {
             ? navLinks.filter((x) => x.id !== "login")
             : !state
             ? navLinks.filter(
-                (x) => x.id !== "addblog" && x.id !== "addmatches"
+                (x) =>
+                  x.id !== "addblog" &&
+                  x.id !== "addmatches" &&
+                  x.id !== "dashboard"
               )
             : navLinks
           ).map((nav, index) => (
@@ -88,7 +96,10 @@ const Navbar = () => {
                 ? navLinks.filter((x) => x.id !== "login")
                 : !state
                 ? navLinks.filter(
-                    (x) => x.id !== "addblog" && x.id !== "addmatches"
+                    (x) =>
+                      x.id !== "addblog" &&
+                      x.id !== "addmatches" &&
+                      x.id !== "dashboard"
                   )
                 : navLinks
               ).map((nav, index) => (
@@ -109,9 +120,20 @@ const Navbar = () => {
           </div>
         </div>
         {state && (
-          <p className="border p-1 ml-2">
-            {state?.email.slice(0, 1).toUpperCase()}
-          </p>
+          <>
+            <p className="border p-1 ml-2">
+              {state?.email.slice(0, 1).toUpperCase()}
+            </p>
+            <button
+              onClick={() => {
+                localStorage.removeItem("user");
+                updateUser(null);
+              }}
+              className="ml-2"
+            >
+              Log Out
+            </button>
+          </>
         )}
       </nav>
     </div>

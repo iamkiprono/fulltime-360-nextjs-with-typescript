@@ -5,7 +5,7 @@ import React from "react";
 const getBlogs = async (): Promise<Blogs[]> => {
   const res = await fetch("https://blog-api-kiprono.onrender.com/blogs", {
     next: {
-      // revalidate: 0, //opt out of caching
+      revalidate: 0, //opt out of caching
       tags: ["blogs"],
     },
   });
