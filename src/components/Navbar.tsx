@@ -108,9 +108,11 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <p className="border p-1 ml-2">
-          {state?.email.slice(0, 1).toUpperCase()}
-        </p>
+        {state && (
+          <p className="border p-1 ml-2">
+            {state?.email.slice(0, 1).toUpperCase()}
+          </p>
+        )}
       </nav>
     </div>
   );
