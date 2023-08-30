@@ -1,6 +1,7 @@
 import MyCard from "@/components/MyLibrary/MyCard";
 import { Blogs } from "@/types/types";
 import React from "react";
+import Visit from "./Visit";
 
 const getBlogs = async (): Promise<Blogs[]> => {
   const res = await fetch("https://blog-api-kiprono.onrender.com/blogs", {
@@ -22,6 +23,7 @@ const Homepage = async () => {
         {blogs.map((blog) => {
           return <MyCard key={blog._id} blogs={blog} />;
         })}
+        <Visit />
       </div>
     </div>
   );
