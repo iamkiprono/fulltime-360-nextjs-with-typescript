@@ -121,9 +121,9 @@ const Navbar = () => {
         </div>
         {state && (
           <>
-            <p className="border p-1 ml-2">
+            <Link href={"/account"} className="border p-1 ml-2">
               {state?.email.slice(0, 1).toUpperCase()}
-            </p>
+            </Link>
             <button
               onClick={() => {
                 localStorage.removeItem("user");
