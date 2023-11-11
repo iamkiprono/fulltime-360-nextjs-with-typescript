@@ -16,17 +16,19 @@ const Dashboard = async () => {
     _id: string;
     hometeam: string;
     awayteam: string;
-    createdAt: Date
+    createdAt: Date;
   }[] = await getVisits();
 
   return (
     <div>
       Total Visits: {visits?.length}
-
-      {[...new Set(visits)].map((visit)=>{
+      {/* @ts-ignore */}
+      {[...new Set(visits)].map((visit, i) => {
         return (
-            <button className="border p-2 m-2">{new Date(visit.createdAt).toLocaleDateString()}</button>
-        )
+          <button key={i} className="border p-2 m-2">
+            {new Date(visit.createdAt).toLocaleDateString()}
+          </button>
+        );
       })}
       {visits
         ?.filter(
